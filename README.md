@@ -6,7 +6,7 @@ AutoCAD .net plugin to automatically generate GIBs and do other automation works
 
 ## Demo
 
-Insert gif or link to demo
+![](https://github.com/ALAMURIT/GibTools/blob/master/demo.gif)
 
 
 ## Installation
