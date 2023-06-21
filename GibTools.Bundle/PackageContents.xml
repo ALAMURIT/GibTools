@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage
+    SchemaVersion="1.0"
+    Version="1.0"
+    Name="GIB_Tools"
+    Description="Quick_Tools"
+    Author="Tirumala_Rao" >
+	<CompanyDetails
+      Name="alamurit"
+      Phone="0000000000"
+      Url="alamurit.itch.io"
+      Email="xxx@gmail.com" />
+	<Components>
+		<RuntimeRequirements
+		  OS="Win64"
+		  Platform="AutoCAD|AutoCAD*" />
+		<ComponentEntry
+		  AppName="GIB_Tools"
+		  ModuleName="./Contents/GibTools.dll"
+		  AppDescription="Helps create GIBs"
+		  LoadOnCommandInvocation="False"
+		  LoadOnAutoCADStartup="True"
+		  LoadOnRequest="True">
+			<Commands GroupName="GibToolsGroup">
+				<Command Global="TiGenerateGib" Local="TiGenerateGib" />
+			</Commands>
+		</ComponentEntry>
+	</Components>
+</ApplicationPackage>
