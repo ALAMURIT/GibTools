@@ -67,6 +67,7 @@ namespace GibTools
                     return;
                 }
 
+
                 //open selected polyline for reading
                 Polyline gibPolyine = tr.GetObject(polyLineSelectionResult.ObjectId, OpenMode.ForRead) as Polyline;
 
@@ -93,6 +94,16 @@ namespace GibTools
                 {
                     return;
                 }
+
+                //Prompt for offset distance
+                PromptDistanceOptions gibDiaPrompt = new PromptDistanceOptions("Enter GIB outer dia: \n");
+                gibDiaPrompt.AllowNegative = true;
+                PromptDoubleResult gibDiaResult = doc.Editor.GetDistance(gibDiaPrompt);
+
+                if (gibDiaResult.Status != PromptStatus.OK)
+                    return;
+
+                double gibDIaValue = gibDiaResult.Value;
 
                 //open block reference for read
                 BlockReference localElbowBlockReference = tr.GetObject(blockSelectionResult.ObjectId, OpenMode.ForRead) as BlockReference;
@@ -173,6 +184,22 @@ namespace GibTools
                     BlockTableRecord elbowBlockTableRecord = (BlockTableRecord)tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
                     elbowBlockTableRecord.AppendEntity(localEblowReference);
                     tr.AddNewlyCreatedDBObject(localEblowReference, true);
+
+                    //offset centerline
+                    DBObjectCollection offsetResult = gibPolyine.GetOffsetCurves(gibDIaValue);
+                    DBObjectCollection negOffsetResult = gibPolyine.GetOffsetCurves(-1 * gibDIaValue);
+                    foreach(Entity acEntity in offsetResult)
+                    {
+                        //add each entity
+                        elbowBlockTableRecord.AppendEntity(acEntity);
+                        tr.AddNewlyCreatedDBObject(acEntity, true);
+                    }
+                    foreach (Entity acEntity in negOffsetResult)
+                    {
+                        //add each entity
+                        elbowBlockTableRecord.AppendEntity(acEntity);
+                        tr.AddNewlyCreatedDBObject(acEntity, true);
+                    }
                 }
 
                 //commit transaction
